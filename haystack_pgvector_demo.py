@@ -1,5 +1,5 @@
 from haystack import Pipeline, Document
-from haystack.components.preprocessors import TextCleaner, DocumentCleaner, DocumentSplitter
+from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
 from haystack.components.embedders import SentenceTransformersDocumentEmbedder, SentenceTransformersTextEmbedder
 from haystack_integrations.components.retrievers.pgvector import PgvectorEmbeddingRetriever
 from haystack_integrations.document_stores.pgvector import PgvectorDocumentStore
