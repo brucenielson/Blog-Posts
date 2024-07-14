@@ -132,7 +132,7 @@ class StableDiffusionXLPipeline:
         ).images
 
         if self._use_refiner:
-            images = self.refiner(prompt=prompt, image=images).images
+            images = self.refiner(prompt=prompt, negative_prompt=negative_prompt, image=images).images
 
         self._save_images(images, prompt)
         return images
