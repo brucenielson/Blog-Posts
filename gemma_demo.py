@@ -1,6 +1,10 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer
+import torch
 from huggingface_hub import login
-# import torch
+
+# Check for GPU availability
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"Using device: {device}")
 
 # Use huggingface-cli login
 secret_file = r'D:\Documents\Secrets\huggingface_secret.txt'
@@ -14,20 +18,16 @@ except Exception as e:
 
 login(secret_text)
 
-model_name = 'google/gemma-1.1-2b-it'
-tokenizer = AutoTokenizer.from_pretrained(model_name)  # google/gemma-2-9b-it
+model_name = 'google/gemma-1.1-2b-it'  # or use google/gemma-2-9b-it
+tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
-    model_name
-    # ,
-    # device_map="auto",
-    # torch_dtype=torch.bfloat16
+    model_name,
+    device_map="auto",
+    torch_dtype=torch.bfloat16 if device == "cuda" else torch.float32
 )
 
 input_text = "Write me a poem with rhyming lines about a Dungeons and Dragons adventure."
-inputs = tokenizer(input_text, return_tensors="pt")#.to("cuda")
-# https://huggingface.co/docs/transformers/v4.42.0/en/internal/generation_utils#transformers.TextStreamer
-# https://huggingface.co/docs/text-generation-inference/conceptual/streaming
-# https://www.gradio.app/guides/quickstart
+inputs = tokenizer(input_text, return_tensors="pt").to(device)
 streamer = TextStreamer(tokenizer, skip_prompt=True)
 
 _ = model.generate(**inputs, streamer=streamer, max_length=2000, do_sample=True, temperature=0.9)
