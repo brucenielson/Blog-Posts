@@ -31,4 +31,4 @@ inputs = tokenizer(input_text, return_tensors="pt").to(device)
 streamer = TextStreamer(tokenizer, skip_prompt=True)
 
 _ = model.generate(**inputs, streamer=streamer, max_length=2000, do_sample=True, temperature=0.9)
-
+# Tested against test environment 1 (for CPUs)

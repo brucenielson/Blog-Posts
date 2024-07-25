@@ -83,3 +83,4 @@ def test_postgres_document_manager():
 
 if __name__ == '__main__':
     test_postgres_document_manager()
+# Tested against test environment 1 (for CPUs)

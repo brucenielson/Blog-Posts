@@ -30,3 +30,4 @@ def test_initialize_database():
 
 
 test_initialize_database()
+# Tested against test environment 1 (for CPUs)

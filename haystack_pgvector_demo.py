@@ -31,7 +31,7 @@ def load_epub(epub_file_path):
 # Initialize and load documents
 def initialize_and_load_documents(epub_file_path, recreate_table=False):
     document_store = PgvectorDocumentStore(
-        table_name="federalist_papers",
+        table_name="federalist_papers_test",
         embedding_dimension=768,
         vector_function="cosine_similarity",
         recreate_table=recreate_table,
@@ -102,3 +102,4 @@ def main():
 
 
 main()
+# Tested against test environment 1 (for CPUs)
