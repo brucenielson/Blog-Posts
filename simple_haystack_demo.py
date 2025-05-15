@@ -1,5 +1,5 @@
 # First do installs:
-# pip install bs4 ebooklib pgvector-haystack
+# pip install bs4 ebooklib pgvector-haystack nltk trafilatura sentence-transformer
 
 # Now do imports
 # Hugging Face and Pytorch imports
@@ -131,17 +131,6 @@ class HaystackPgvector:
             documents = list({doc.id: doc for doc in documents}.values())
             return {"documents": documents}
 
-    @component
-    class _MergeResults:
-        @component.output_types(merged_results=Dict[str, Any])
-        def run(self, documents: List[Document], replies: List[str]) -> Dict[str, Dict[str, Any]]:
-            return {
-                "merged_results": {
-                    "documents": documents,
-                    "replies": replies
-                }
-            }
-
     @staticmethod
     def _get_context_length(model_name: str) -> Optional[int]:
         config: AutoConfig = AutoConfig.from_pretrained(model_name)
@@ -259,7 +248,7 @@ def main() -> None:
     query: str = "What is the difference between a republic and a democracy?"
     rag_processor.generate_response(query)
     # Draw images of the pipelines
-    # rag_processor.draw_pipelines()
+    rag_processor.draw_pipelines()
 
 
 if __name__ == "__main__":
