@@ -1,6 +1,8 @@
+# First do installs:
+# pip install bs4 ebooklib pgvector-haystack
+
+# Now do imports
 # Hugging Face and Pytorch imports
-import torch
-import huggingface_hub as hf_hub
 from transformers import AutoConfig
 # EPUB imports
 from bs4 import BeautifulSoup
@@ -27,7 +29,6 @@ class HaystackPgvector:
                  table_name: str = 'haystack_pgvector_docs',
                  recreate_table: bool = False,
                  book_file_path: Optional[str] = None,
-                 hf_password: Optional[str] = None,
                  postgres_user_name: str = 'postgres',
                  postgres_password: str = None,
                  postgres_host: str = 'localhost',
@@ -48,8 +49,6 @@ class HaystackPgvector:
         self._temperature: float = temperature
 
         # Passwords and connection strings
-        if hf_password is not None:
-            hf_hub.login(hf_password, add_to_git_credential=False)
         if (postgres_password is None) or (postgres_password == ""):
             postgres_password = HaystackPgvector.get_secret(r'D:\Documents\Secrets\postgres_password.txt')
         # PG_CONN_STR="postgresql://USER:PASSWORD@HOST:PORT/DB_NAME
@@ -70,11 +69,6 @@ class HaystackPgvector:
         self._document_store: Optional[PgvectorDocumentStore] = None
         self._doc_convert_pipeline: Optional[Pipeline] = None
         self._initialize_document_store()
-
-        # Warm up _llm_generator
-        self._has_cuda: bool = torch.cuda.is_available()
-        self._torch_device: torch.device = torch.device("cuda" if self._has_cuda else "cpu")
-        self._component_device: Device = Device.gpu() if self._has_cuda else Device.cpu()
 
         # Declare rag pipeline
         self._rag_pipeline: Optional[Pipeline] = None
@@ -260,13 +254,12 @@ def main() -> None:
     epub_file_path: str = "Federalist Papers.epub"
     rag_processor: HaystackPgvector = HaystackPgvector(table_name="federalist_papers",
                                                        recreate_table=False,
-                                                       book_file_path=epub_file_path,
-                                                       hf_password=secret)
+                                                       book_file_path=epub_file_path)
 
-    # Draw images of the pipelines
-    # rag_processor.draw_pipelines()
     query: str = "What is the difference between a republic and a democracy?"
     rag_processor.generate_response(query)
+    # Draw images of the pipelines
+    # rag_processor.draw_pipelines()
 
 
 if __name__ == "__main__":
