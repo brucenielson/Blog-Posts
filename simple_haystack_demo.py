@@ -58,7 +58,6 @@ class HaystackPgvector:
 
         print("Warming up Text Embedder")
         self._embedder_model_name: Optional[str] = embedder_model_name
-        # TODO: Use Cuda if possible
         self._sentence_embedder: SentenceTransformersTextEmbedder
         if self._embedder_model_name is not None:
             self._sentence_embedder = SentenceTransformersTextEmbedder(
