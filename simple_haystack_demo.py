@@ -238,8 +238,6 @@ class HaystackPgvector:
 
 
 def main() -> None:
-    secret: str = HaystackPgvector.get_secret(r'D:\Documents\Secrets\huggingface_secret.txt')
-
     epub_file_path: str = "Federalist Papers.epub"
     rag_processor: HaystackPgvector = HaystackPgvector(table_name="federalist_papers",
                                                        recreate_table=False,
@@ -248,7 +246,7 @@ def main() -> None:
     query: str = "What is the difference between a republic and a democracy?"
     rag_processor.generate_response(query)
     # Draw images of the pipelines
-    rag_processor.draw_pipelines()
+    # rag_processor.draw_pipelines()
 
 
 if __name__ == "__main__":
