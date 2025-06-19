@@ -8,24 +8,26 @@ events = {
     "First AI Conference": 1956,
 }
 
-# Sort events by year
+# Sort events chronologically
 sorted_events = sorted(events.items(), key=lambda x: x[1])
 labels, years = zip(*sorted_events)
 
-# Setup timeline
-fig, ax = plt.subplots(figsize=(12, 2))
-ax.hlines(1, min(years) - 100, max(years) + 100, color='black')  # timeline line
+# Create plot
+fig, ax = plt.subplots(figsize=(12, 3))
+ax.hlines(0, min(years) - 100, max(years) + 100, color='black')  # main timeline
 
-# Plot event markers
-for label, year in sorted_events:
-    ax.plot(year, 1, 'o', color='red')
-    ax.text(year, 1.05, f"{label}\n{abs(year)} {'BC' if year < 0 else 'AD'}",
-            ha='center', va='bottom', fontsize=9)
+# Alternate label positions
+for i, (label, year) in enumerate(sorted_events):
+    ypos = 0.2 if i % 2 == 0 else -0.3
+    valign = 'bottom' if ypos > 0 else 'top'
+    ax.plot(year, 0, 'o', color='red')
+    ax.text(year, ypos, f"{label}\n{abs(year)} {'BC' if year < 0 else 'AD'}",
+            ha='center', va=valign, fontsize=9)
 
 # Formatting
-ax.set_ylim(0.9, 1.3)
+ax.set_ylim(-0.5, 0.5)
 ax.set_xlim(min(years) - 100, max(years) + 100)
 ax.axis('off')
-plt.title("Proportional Historical Timeline")
+plt.title("Proportional Historical Timeline (Alternating Labels)")
 plt.tight_layout()
 plt.show()
