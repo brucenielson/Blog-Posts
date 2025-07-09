@@ -19,12 +19,6 @@ events = {
 
 # Labels to highlight
 highlight = {
-    "Aristotle",
-    "Probability\nTheory",
-    "Thomas\nBayes",
-    "George\nBoole",
-    "Gottlob\nFrege",
-    "1st\nAI\nConference",
 }
 
 # Sort events chronologically
